@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/learnlib-distribution-20110714.jar"/>
+	<classpathentry kind="lib" path="lib/learnlib-distribution-20110714.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/G:/GitHub/docs-retreat-2019/lib/learnlib-distribution-20110714-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
