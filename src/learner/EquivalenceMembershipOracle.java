@@ -7,28 +7,26 @@ import de.ls5.jlearn.interfaces.Word;
 import de.ls5.jlearn.shared.WordImpl;
 
 /**
- * An oracle used during learning.
- * It executes queries (input words/sequences) on the SUT and returns
- * the resulting outputs.
+ * A membership oracle used during equivalence checking (checking that hypothesis
+ * behaves the same as the SUT).
  */
-public class MembershipOracle implements Oracle {
-	private static final long serialVersionUID = -1374892499287788040L;
+public class EquivalenceMembershipOracle implements Oracle {
+	private static final long serialVersionUID = -5409624854115451929L;
 	private SutInterface sut;
-	private int numMembQueries = 0;
+	private int numEquivMemQueries = 0;
 
-	public MembershipOracle(SutInterface sut) {
+	public EquivalenceMembershipOracle(SutInterface sut) {
 		this.sut = sut;
 	}
 
-	//@Override
 	public Word processQuery(Word query) throws LearningException {
 		Word result = new WordImpl();
 		System.out.println("LearnLib Query: " + query);
 
 		sut.sendReset();
-		
-		numMembQueries++;
-		System.out.println("Member query number: " + numMembQueries);
+
+		numEquivMemQueries++;
+		System.out.println("Equivalence query number: " + numEquivMemQueries);
 
 		for (Symbol input : query.getSymbolList()) {
 
@@ -38,13 +36,10 @@ public class MembershipOracle implements Oracle {
 		}
 
 		System.out.println("Returning to LearnLib: " + result);
-
 		return result;
 	}
-
-	public int getNumMembQueries() {
-		int result = numMembQueries;
-		numMembQueries = 0;
-		return result;
+	
+	public int getNumEquivMemQueries() {
+		return numEquivMemQueries;
 	}
 }

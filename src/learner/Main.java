@@ -26,10 +26,11 @@ import de.ls5.jlearn.shared.AlphabetImpl;
 import de.ls5.jlearn.shared.SymbolImpl;
 import de.ls5.jlearn.util.DotUtil;
 
+/**
+ * The Java main class for executing a learning experiment. 
+ */
+// You should not 
 public class Main {
-	private static int maxNumTraces;
-	private static int minTraceLength;
-	private static int maxTraceLength;
 	private static long seed = System.currentTimeMillis();
 	private static String seedStr = Long.toString(seed);
 	public static PrintStream  stdout= System.out;
@@ -41,26 +42,16 @@ public class Main {
 	
 	    stdout.println("Start Learning");
 	    
+	    // some 
 	    LearnLog.addAppender(new PrintStreamLoggingAppender(LogLevel.INFO, System.out));
-		PrintStream fileStream = new PrintStream(new FileOutputStream("out.txt",false));
+		PrintStream fileStream = new PrintStream(new FileOutputStream("output.txt",false));
 		System.setOut(fileStream);
 		PrintStream statisticsFileStream = new PrintStream(new FileOutputStream("statistics.txt",false));
 			
-		//seed = 1299777356020l; 		
-		seedStr = Long.toString(seed) + " - Set statically";
-	
-		handleArgs(args);
-	
-		System.out.println("Maximum number of traces: " + maxNumTraces);
-		System.out.println("Minimum length of traces: " + minTraceLength);
-		System.out.println("Maximim length of traces: " + maxTraceLength);
-		System.out.println("Seed: " + seedStr);
-		Random random = new Random(seed);
+		// build membership oracles used during learning and testing (equivalence checking)
+		MembershipOracle learningMemOracle = new MembershipOracle(new VendingMachine());
+		EquivalenceMembershipOracle equivalenceMemOracle = new EquivalenceMembershipOracle(new VendingMachine());
 		
-		// build membership and equivalence oracles
-		EquivalenceOracle mapper = new EquivalenceOracle();
-		MembershipOracle memberOracle = new MembershipOracle();
-		mapper.setMembershipOracle(memberOracle);
 		de.ls5.jlearn.interfaces.EquivalenceOracle eqOracle;
 		
 		// building the input alphabet and output alphabets
@@ -84,7 +75,7 @@ public class Main {
 		int refinementCounter = 0;
 		int memQueries = 0;
 		int totalMemQueries = 0;
-		int totalEquivQueries = 0;
+		int totalEquivMemQueries = 0;
 		long totalTimeMemQueries = 0;
 		long totalTimeEquivQueries = 0;
 		long start = System.currentTimeMillis();
@@ -94,11 +85,11 @@ public class Main {
 		while (!done) {
 			eqOracle = new BasicEquivalenceOracle();
 
-			eqOracle.setOracle(mapper);
+			eqOracle.setOracle(learningMemOracle);
 			
 			// construct the learner implementing a learning algorithm (which is ObservationPack in this case)
-			learner = new ObservationPack();
-			learner.setOracle(memberOracle);
+			learner = new Angluin();
+			learner.setOracle(learningMemOracle);
 			learner.setAlphabet(inputAlphabet);
 	
 			try {
@@ -115,7 +106,7 @@ public class Main {
 					System.err.flush();
 					System.out.println("done learning");
 	
-					memQueries = memberOracle.getNumMembQueries();
+					memQueries = learningMemOracle.getNumMembQueries();
 					statisticsFileStream.println("Membership queries: " + memQueries);
 					totalMemQueries += memQueries;
 					endtmp = System.currentTimeMillis();
@@ -137,8 +128,8 @@ public class Main {
 					System.out.flush();
 					System.err.flush();
 					System.out.println("done equivalence query");
-					statisticsFileStream.println("Membership queries in Equivalence query: " + mapper.getNumEquivQueries());
-					totalEquivQueries +=  mapper.getNumEquivQueries();
+					statisticsFileStream.println("Membership queries in Equivalence query: " + equivalenceMemOracle.getNumEquivMemQueries());
+					totalEquivMemQueries +=  equivalenceMemOracle.getNumEquivMemQueries();
 					endtmp = System.currentTimeMillis();
 					statisticsFileStream.println("Running time of equivalence query: " + (endtmp-starttmp) + "ms.");
 					totalTimeEquivQueries += endtmp-starttmp;
@@ -180,7 +171,7 @@ public class Main {
 		statisticsFileStream.println("Total time Equivalence queries: " + totalTimeEquivQueries);
 		statisticsFileStream.println("Total abstraction refinements: " + refinementCounter);
 		statisticsFileStream.println("Total Membership queries: " + totalMemQueries);
-		statisticsFileStream.println("Total Membership queries in Equivalence query: " + totalEquivQueries);
+		statisticsFileStream.println("Total Membership queries in Equivalence query: " + totalEquivMemQueries);
 	
 	    // final output to out.txt
 		System.out.println("Seed: " + seedStr);
@@ -218,70 +209,5 @@ public class Main {
 		
 		
 		System.err.println("Learner Finished!");
-	}
-
-	private static void handleArgs(String[] args) {
-		for (int i = 0; i < args.length; i++) {
-			if ("--max-traces".equals(args[i])) {
-				if (i == args.length - 1) {
-					System.err.println("Missing argument for --max-traces.");
-					printUsage();
-					System.exit(-1);
-				}
-				try {
-					maxNumTraces = new Integer(args[++i]);
-				} catch (NumberFormatException ex) {
-					System.err.println("Error parsing argument for --max-traces. Must be integer. " + args[i]);
-					System.exit(-1);
-				}
-			}
-			if ("--min-trace-length".equals(args[i])) {
-				if (i == args.length - 1) {
-					System.err.println("Missing argument for --min-trace-length.");
-					printUsage();
-					System.exit(-1);
-				}
-				try {
-					minTraceLength = new Integer(args[++i]);
-				} catch (NumberFormatException ex) {
-					System.err.println("Error parsing argument for --min-trace-length. Must be integer. " + args[i]);
-					System.exit(-1);
-				}
-			}
-			if ("--max-trace-length".equals(args[i])) {
-				if (i == args.length - 1) {
-					System.err.println("Missing argument for --max-trace-length.");
-					printUsage();
-					System.exit(-1);
-				}
-				try {
-					maxTraceLength = new Integer(args[++i]);
-				} catch (NumberFormatException ex) {
-					System.err.println("Error parsing argument for --max-trace-length. Must be integer. " + args[i]);
-					System.exit(-1);
-				}
-			}
-			if ("--seed".equals(args[i])) {
-				if (i == args.length - 1) {
-					System.err.println("Missing argument for --min-trace-length.");
-					printUsage();
-					System.exit(-1);
-				}
-				try {
-					seed = new Integer(args[++i]);
-					seedStr = Long.toString(seed);
-				} catch (NumberFormatException ex) {
-					System.err.println("Error parsing argument for --seed. Must be integer. " + args[i]);
-					System.exit(-1);
-				}
-			}
-		}
-	}
-
-	public static void printUsage() {
-		System.out.println(" --max-traces       - Maximum number of traces to run during equivalence testing.");
-		System.out.println(" --min-trace-length - Minimum length of traces during equivalence query.");
-		System.out.println(" --max-trace-length - Maximum length of traces during equivalence query.");
-		System.out.println(" --seed             - Seed to use for random number generator.");
 	}
 }

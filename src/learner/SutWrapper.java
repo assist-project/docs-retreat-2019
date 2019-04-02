@@ -13,7 +13,7 @@ import de.ls5.jlearn.shared.SymbolImpl;
  * Class used to communicate with the System Under Test (SUT) over sockets.
  */
 // You should leave this unchanged.
-public class SutWrapper {
+public class SutWrapper implements SutInterface {
 	private Socket sock;
 	private PrintWriter sockout;
 	private BufferedReader sockin;

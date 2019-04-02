@@ -9,23 +9,30 @@ import de.ls5.jlearn.interfaces.Automaton;
 import de.ls5.jlearn.interfaces.EquivalenceOracle;
 import de.ls5.jlearn.interfaces.EquivalenceOracleOutput;
 import de.ls5.jlearn.interfaces.Oracle;
+import de.ls5.jlearn.interfaces.State;
 import de.ls5.jlearn.interfaces.Symbol;
 import de.ls5.jlearn.interfaces.Word;
 import de.ls5.jlearn.shared.WordImpl;
 
 /**
- * A basic equivalence oracle implementation
+ * A basic equivalence oracle implementation. 
  */
+// This is the class you should adapt in order to learn VendingMachine3.0.
 public class BasicEquivalenceOracle implements EquivalenceOracle {
 
+	/**
+	 * The oracle by which the EquivalenceOracle interracts with the systems.
+	 */
 	private Oracle oracle;
 
 	/**
 	 * Used random symbol generation.
 	 */
 	private Random rand = new Random(0);
+	
+	
 
-	// You will probably want to play around with the fields bellow
+	// You will definitely want to play around with the fields bellow
 	/**
 	 * Probability of reseting the system
 	 */
@@ -39,7 +46,7 @@ public class BasicEquivalenceOracle implements EquivalenceOracle {
 	/**
 	 * The maximum number of queries to run.
 	 */
-	private int maxQueries = 50;
+	private int maxQueries = 100;
 
 	public BasicEquivalenceOracle() {
 	}
@@ -98,9 +105,25 @@ public class BasicEquivalenceOracle implements EquivalenceOracle {
 				break;
 			}
 		}
-
+		
 		return trace;
 	}
+	
+	/*
+	 * Returns a modifiable access sequence to a randomly selected state in the hypothesis.
+	 * HINT: this should be useful in improving the testing algorithm.
+	 */
+	private Word getModifiableAccessSequence(Automaton hyp) {
+		int stateIndex = rand.nextInt(hyp.getAllStates().size());
+		State state = hyp.getAllStates().get(stateIndex);
+		Word accseq = hyp.getTraceToState(state);
+		Word trace = new WordImpl();
+		for (Symbol sym : accseq.getSymbolList()) {
+	    	trace.addSymbol(sym);
+	    }
+		
+		return trace;
+	} 
 
 	/**
 	 * Sets the oracle used to execute queries/run tests on the system.
