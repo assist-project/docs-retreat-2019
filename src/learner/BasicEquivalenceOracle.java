@@ -60,6 +60,7 @@ public class BasicEquivalenceOracle implements EquivalenceOracle {
 	@Override
 	public EquivalenceOracleOutput findCounterExample(Automaton hyp) {
 		EquivalenceOracleOutputImpl equivOracleOutput = null;
+		// generates traces until either maxQueries is reached or a CE is found
 		for (int i = 0; i < maxQueries; i++) {
 			Word trace = generateTrace(hyp);
 			Word hypOutput = hyp.getTraceOutput(trace);
@@ -113,7 +114,7 @@ public class BasicEquivalenceOracle implements EquivalenceOracle {
 	/*
 	 * Returns a modifiable access sequence to a randomly selected state in the hypothesis.
 	 * HINT: this method may be useful in improving the testing algorithm.
-	 * WARNING: do not make changes to the list returned by hyp.getTraceToState(state), since that will crash the learner
+	 * WARNING: do not make changes to the Word returned by hyp.getTraceToState(state), since that will crash the learner
 	 */
 	private Word getModifiableAccessSequence(Automaton hyp) {
 		int stateIndex = rand.nextInt(hyp.getAllStates().size());
