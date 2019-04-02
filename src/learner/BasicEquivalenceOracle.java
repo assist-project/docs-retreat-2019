@@ -29,7 +29,7 @@ public class BasicEquivalenceOracle implements EquivalenceOracle {
 	/**
 	 * Probability of reseting the system
 	 */
-	private double probReset = 0.2;
+	private double probReset = 0.1;
 
 	/**
 	 * The maximum length of a trace in terms of symbols
@@ -39,7 +39,7 @@ public class BasicEquivalenceOracle implements EquivalenceOracle {
 	/**
 	 * The maximum number of queries to run.
 	 */
-	private int maxQueries = 100;
+	private int maxQueries = 50;
 
 	public BasicEquivalenceOracle() {
 	}
@@ -75,7 +75,7 @@ public class BasicEquivalenceOracle implements EquivalenceOracle {
 			}
 		}
 		System.err.println("Could not find any counterexamples");
-		return null;
+		return equivOracleOutput;
 	}
 
 	/*

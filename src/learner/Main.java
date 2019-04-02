@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import de.ls5.jlearn.abstractclasses.LearningException;
+import de.ls5.jlearn.algorithms.angluin.Angluin;
 import de.ls5.jlearn.algorithms.packs.ObservationPack;
 import de.ls5.jlearn.equivalenceoracles.RandomWalkEquivalenceOracle;
 import de.ls5.jlearn.interfaces.Alphabet;
@@ -125,7 +126,7 @@ public class Main {
 					
 					//stable hypothesis after membership queries
 					Automaton hyp = learner.getResult();
-					DotUtil.writeDot(hyp, new File("tmp-learnresult" + hypCounter++ + ".dot"));
+					DotUtil.writeDot(hyp, new File("hypothesis" + hypCounter++ + ".dot"));
 			
 					System.out.println("starting equivalence query");
 					System.out.flush();
@@ -212,7 +213,7 @@ public class Main {
 			}
 		}
 	
-		// export Mealy macchine to pdf
+		// export Mealy machine to pdf
 		DotUtil.invokeDot(dotfile, "pdf", pdffile);	
 		
 		
