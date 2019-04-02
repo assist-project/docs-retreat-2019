@@ -24,8 +24,7 @@ public class VendingMachine implements SutInterface{
 			currentValue -= MARS_COST;
 			output = new SymbolImpl("OMARS");
 		} else if (input.toString().equals("ISNICKERS") && currentValue > SNICKERS_COST) {
-			if (currentValue < MAX_VALUE)
-				currentValue -= SNICKERS_COST;
+			currentValue -= SNICKERS_COST;
 			output = new SymbolImpl("OSNICKERS");
 		} else if (input.toString().equals("I10")) {
 			if (currentValue + 10 < MAX_VALUE) {

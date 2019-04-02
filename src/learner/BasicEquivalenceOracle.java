@@ -21,7 +21,7 @@ import de.ls5.jlearn.shared.WordImpl;
 public class BasicEquivalenceOracle implements EquivalenceOracle {
 
 	/**
-	 * The oracle by which the EquivalenceOracle interracts with the systems.
+	 * The oracle by which the EquivalenceOracle interacts with the systems.
 	 */
 	private Oracle oracle;
 
@@ -33,13 +33,14 @@ public class BasicEquivalenceOracle implements EquivalenceOracle {
 	
 
 	// You will definitely want to play around with the fields bellow
+	// Be careful, long counterexamples will significantly slow down the learner.
 	/**
-	 * Probability of reseting the system
+	 * Probability of reseting the system after each input symbol
 	 */
-	private double probReset = 0.1;
+	private double probReset = 0.2;
 
 	/**
-	 * The maximum length of a trace in terms of symbols
+	 * The maximum length of a trace in terms of input symbols
 	 */
 	private int maxTraceLength = 10;
 
@@ -47,7 +48,7 @@ public class BasicEquivalenceOracle implements EquivalenceOracle {
 	 * The maximum number of queries to run.
 	 */
 	private int maxQueries = 100;
-
+	
 	public BasicEquivalenceOracle() {
 	}
 
@@ -86,7 +87,7 @@ public class BasicEquivalenceOracle implements EquivalenceOracle {
 	}
 
 	/*
-	 * Generates a trace of inputs given a hypothesis.
+	 * Generates a trace of inputs given a hypothesis by randomly selected inputs from the alphabet.
 	 * 
 	 * THIS IS THE METHOD YOU SHOULD EDIT !!!
 	 * 
@@ -111,7 +112,8 @@ public class BasicEquivalenceOracle implements EquivalenceOracle {
 	
 	/*
 	 * Returns a modifiable access sequence to a randomly selected state in the hypothesis.
-	 * HINT: this should be useful in improving the testing algorithm.
+	 * HINT: this method may be useful in improving the testing algorithm.
+	 * WARNING: do not make changes to the list returned by hyp.getTraceToState(state), since that will crash the learner
 	 */
 	private Word getModifiableAccessSequence(Automaton hyp) {
 		int stateIndex = rand.nextInt(hyp.getAllStates().size());

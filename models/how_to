@@ -1,0 +1,8 @@
+We generate the VendingMachine3.0 uppaal from the Mealy machine model learned for the Java vending machine.
+
+We convert the model using the tomte_learnresult2uppaal.bat utility provided by Tomte, running the following command:
+tomte_learnresult2uppaal.bat VendingMachineAbstraction.json learnresult.dot VendingMachine3.0.xml stateVar out.dot
+
+We then generate the .jar via the sut tool:
+sut_uppaal2jar.bat VendingMachine3.0.xml
+

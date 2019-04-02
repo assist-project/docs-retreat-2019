@@ -1,0 +1,59 @@
+{
+  "inputs": [
+    {
+      "name": "I5",
+      "params": [ ]
+    },
+    {
+      "name": "I10",
+      "params": [ [ ] ]
+    },
+    {
+      "name": "IMARS",
+      "params": [ ]
+    },
+    {
+      "name": "ISNICKERS",
+      "params": [ ]
+    }
+  ],
+  "concrete_alphabet": [
+    {
+      "method_name": "I5",
+      "param_types": [ ]
+    },
+    {
+      "method_name": "I10",
+      "param_types": [ ]
+    },
+    {
+      "method_name": "ISNICKERS",
+      "param_types": [ ]
+    },
+    {
+      "method_name": "IMARS",
+      "param_types": [ ]
+    },
+    {
+      "method_name": "Oquiescence",
+      "param_types": [ ]
+    },
+    {
+      "method_name": "OSNICKERS",
+      "param_types": [ ]
+    },
+    {
+      "method_name": "OMARS",
+      "param_types": [ ]
+    },
+    {
+      "method_name": "OACCEPT",
+      "param_types": [ ]
+    },
+    {
+      "method_name": "OREJECT",
+      "param_types": [ ]
+    }
+  ],
+  "constants": [ ]
+}

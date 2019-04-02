@@ -1,0 +1,2 @@
+Good results can be achieved with: probReset 0.01, maxTraceLength 10, maxQueries 5000
+Provided the generateTrace method has been adapted. 

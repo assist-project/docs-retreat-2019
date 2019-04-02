@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'><nta><declaration>// Place global declarations here.
+
+void IMARS() {
+}
+
+void ISNICKERS() {
+}
+
+void I5() {
+}
+
+void I10() {
+}
+
+void IREFUND() {
+}
+
+void OACCEPT() {
+}
+
+void OREJECT() {
+}
+
+void OMARS() {
+}
+
+void OSNICKERS() {
+}
+</declaration><template><name x="5" y="5">Template</name><declaration>// Place local declarations here.
+</declaration><location id="id0" x="-200" y="-184"></location><location id="id1" x="408" y="-40"></location><location id="id2" x="264" y="-32"></location><location id="id3" x="104" y="-32"></location><location id="id4" x="-88" y="-32"></location><location id="id5" x="-296" y="-24"></location><location id="id6" x="-496" y="-24"></location><location id="id7" x="-696" y="-24"></location><location id="id8" x="-896" y="-24"></location><init ref="id8"/><transition><source ref="id1"/><target ref="id2"/><label kind="synchronisation" x="304" y="56">OREJECT()</label><nail x="328" y="48"/></transition><transition><source ref="id2"/><target ref="id0"/><label kind="synchronisation" x="0" y="-152">IMARS()</label></transition><transition><source ref="id0"/><target ref="id6"/><label kind="synchronisation" x="-416" y="-128">OMARS()</label></transition><transition><source ref="id2"/><target ref="id1"/><label kind="synchronisation" x="320" y="-64">I5()</label></transition><transition><source ref="id3"/><target ref="id2"/><label kind="synchronisation" x="120" y="-64">OACCEPT()</label></transition><transition><source ref="id4"/><target ref="id3"/><label kind="synchronisation" x="-52" y="-47">I5()</label></transition><transition><source ref="id5"/><target ref="id4"/><label kind="synchronisation" x="-252" y="-43">OACCEPT()</label></transition><transition><source ref="id6"/><target ref="id5"/><label kind="synchronisation" x="-392" y="-56">I5()</label><nail x="-368" y="-24"/></transition><transition><source ref="id7"/><target ref="id6"/><label kind="synchronisation" x="-640" y="-48">OACCEPT()</label></transition><transition><source ref="id8"/><target ref="id7"/><label kind="synchronisation" x="-832" y="-56">I5()</label></transition></template><system>// Place template instantiations here.
+Process = Template();
+
+// List one or more processes to be composed into a system.
+system Process;</system></nta>
