@@ -6,6 +6,7 @@ import de.ls5.jlearn.interfaces.Symbol;
 import de.ls5.jlearn.interfaces.Word;
 import de.ls5.jlearn.shared.WordImpl;
 
+
 public class EquivalenceOracle implements Oracle {
 	private static final long serialVersionUID = -5409624854115451929L;
 	private SutWrapper sutWrapper;

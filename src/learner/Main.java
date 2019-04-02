@@ -55,9 +55,10 @@ public class Main {
 		System.out.println("Maximim length of traces: " + maxTraceLength);
 		System.out.println("Seed: " + seedStr);
 		Random random = new Random(seed);
-			
+		
+		// build membership and equivalence oracles
 		EquivalenceOracle mapper = new EquivalenceOracle();
-		MembershipOracle memberOracle = new MembershipOracle(mapper);
+		MembershipOracle memberOracle = new MembershipOracle();
 		mapper.setMembershipOracle(memberOracle);
 		de.ls5.jlearn.interfaces.EquivalenceOracle eqOracle;
 		
@@ -90,12 +91,11 @@ public class Main {
 		long endtmp;
 	
 		while (!done) {
-			eqOracle = new RandomWalkEquivalenceOracle(20, 100, 100);
-			
+			eqOracle = new BasicEquivalenceOracle();
 
 			eqOracle.setOracle(mapper);
-			((RandomWalkEquivalenceOracle)eqOracle).setRandom(random);
 			
+			// construct the learner implementing a learning algorithm (which is ObservationPack in this case)
 			learner = new ObservationPack();
 			learner.setOracle(memberOracle);
 			learner.setAlphabet(inputAlphabet);
@@ -107,7 +107,8 @@ public class Main {
 					System.out.flush();
 					System.err.flush();
 					
-					//execute membership queries
+					//initiates an iteration of learning 
+					//the learner execute membership queries until a stable hypothesis is formed
 					learner.learn();
 					System.out.flush();
 					System.err.flush();
@@ -129,7 +130,8 @@ public class Main {
 					System.out.println("starting equivalence query");
 					System.out.flush();
 					System.err.flush();
-					//search for counterexample
+					
+					//search the hypothesis for counterexamples
 					EquivalenceOracleOutput o = eqOracle.findCounterExample(hyp);
 					System.out.flush();
 					System.err.flush();
@@ -150,7 +152,7 @@ public class Main {
 					System.out.println("Counter Example: " + o.getCounterExample().toString());
 					System.out.flush();
 					System.err.flush();
-					//return counter example to the learner, so that it can use it to generate new membership queries
+					//return counter example to the learner, so that it can use it to refine hypothesis/generate new membership queries
 					learner.addCounterExample(o.getCounterExample(), o.getOracleOutput());
 					System.out.flush();
 					System.err.flush();
@@ -185,12 +187,10 @@ public class Main {
 		System.out.println("Done.");
 		System.err.println("Successful run.");
 	
-		// output needed for equivalence checking
-		//  - learnresult.dot : learned state machine
 		Automaton learnedModel = learner.getResult();
 		State startState=learnedModel.getStart();
 		
-		statisticsFileStream.println("Total states in learned abstract Mealy machine: " + learnedModel.getAllStates().size());
+		statisticsFileStream.println("Total states in learned Mealy machine: " + learnedModel.getAllStates().size());
 		
 		// output learned model with the start state highlighted
 	
@@ -212,7 +212,7 @@ public class Main {
 			}
 		}
 	
-		// write pdf
+		// export Mealy macchine to pdf
 		DotUtil.invokeDot(dotfile, "pdf", pdffile);	
 		
 		

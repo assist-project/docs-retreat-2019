@@ -6,12 +6,15 @@ import de.ls5.jlearn.interfaces.Symbol;
 import de.ls5.jlearn.interfaces.Word;
 import de.ls5.jlearn.shared.WordImpl;
 
+/**
+ * Class used to run membership queries on the system. 
+ */
 public class MembershipOracle implements Oracle {
 	private static final long serialVersionUID = -1374892499287788040L;
 	private SutWrapper sutWrapper;
 	private int numMembQueries = 0;
 
-	public MembershipOracle(EquivalenceOracle mapper) {
+	public MembershipOracle() {
 		sutWrapper = new SutWrapper();
 	}
 

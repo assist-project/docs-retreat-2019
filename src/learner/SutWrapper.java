@@ -9,10 +9,15 @@ import java.net.Socket;
 import de.ls5.jlearn.interfaces.Symbol;
 import de.ls5.jlearn.shared.SymbolImpl;
 
+/**
+ * Class used to communicate with the System Under Test (SUT) over sockets.
+ */
+// You should leave this unchanged.
 public class SutWrapper {
 	private Socket sock;
 	private PrintWriter sockout;
 	private BufferedReader sockin;
+	private int inputs;
 	
 	public SutWrapper() {
 		try {
@@ -32,6 +37,7 @@ public class SutWrapper {
 			
 			// Receive output from SUT
 			Symbol concreteOutput = new SymbolImpl(sockin.readLine());
+			inputs ++;
 			
 			return concreteOutput;
 		} catch (IOException e) {
@@ -55,4 +61,7 @@ public class SutWrapper {
 		}
 	}
 	
+	public int getNumInputs() {
+		return inputs;
+	}
 }
